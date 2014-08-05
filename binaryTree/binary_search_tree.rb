@@ -54,6 +54,30 @@ class Tree
     end
     nil
   end
+
+  def in_order
+    @left.in_order if @left
+    puts @value
+    @right.in_order if @right
+  end
+
+  def is_bst?(opts = {})
+    if @left && (not @left.is_bst?(opts))
+      return false
+    end
+
+    last_visited_value = opts[:last_visited]
+
+    return false if last_visited_value && last_visited_value > @value
+    opts[:last_visited] = @value
+
+    if @right
+      return @right.is_bst?(opts)
+    end
+
+    true
+  end
+
 end
 
 def populate_directly
@@ -75,7 +99,10 @@ def populate_by_insertion
   root
 end
 
-tree = populate_by_insertion
+tree = populate_directly
+
+# tree.in_order
+p tree.is_bst?
 
 p tree.find(5)
 p tree.find(4)
